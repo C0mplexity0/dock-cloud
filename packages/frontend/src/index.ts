@@ -5,9 +5,7 @@ import { render } from "./index-server";
 const htmlCache = new Map<string, string>();
 
 async function processRequest(request: Request) {
-  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
   const pathname = new URL(request.url).pathname;
-  const filePath = path.resolve(staticDirectory, pathname.slice(1));
 
   if (htmlCache.get(pathname)) {
     return new Response(htmlCache.get(pathname), {
@@ -16,6 +14,9 @@ async function processRequest(request: Request) {
       },
     });
   }
+
+  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const filePath = path.resolve(staticDirectory, pathname.slice(1));
 
   if (filePath.startsWith(`${staticDirectory}${path.sep}`)) {
     const file = Bun.file(filePath);
@@ -84,7 +85,11 @@ async function renderSSR(htmlText: string, request: Request): Promise<string> {
 
 const server = serve({
   async fetch(request) {
-    return await processRequest(request);
+    const initialTime = performance.now();
+    const response = await processRequest(request);
+    const duration = performance.now() - initialTime;
+    console.log(`${request.method} ${request.url} - ${response.status} - ${duration.toFixed(2)}ms`);
+    return response;
   }
 });
 
