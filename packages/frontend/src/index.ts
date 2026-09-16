@@ -1,5 +1,6 @@
-import { serve } from "bun";
-import path from "node:path";
+import { Glob } from "bun";
+import { serve } from "bun-serve-compress";
+import path, { basename } from "node:path";
 import { render } from "./index-server";
 
 const htmlCache = new Map<string, string>();
@@ -43,22 +44,67 @@ async function processRequest(request: Request) {
   });
 }
 
+function findRequiredModules(jsText: string, existingModules: string[]): string[] {
+  const matches = jsText.match(/chunk-[a-zA-Z0-9]+\.js/g);
+  if (!matches) {
+    return [];
+  }
+
+  const jsModules = [];
+
+  for (const match of matches) {
+    if (existingModules.includes(match)) {
+      jsModules.push(match);
+    }
+  }
+
+  return jsModules;
+}
+
+async function findRequiredModulesFromFile(filePath: string, jsFiles: string[]): Promise<string[]> {
+  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const file = Bun.file(path.join(staticDirectory, filePath));
+  const text = await file.text();
+  const requiredModules = findRequiredModules(text, jsFiles);
+  return requiredModules;
+}
+
 async function injectModulePreloadLinks(htmlText: string, request: Request): Promise<string> {
   const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
   const pathname = new URL(request.url).pathname;
 
   const manifest = Bun.file(path.join(staticDirectory, "../route-manifest.json"));
   const manifestContent = await manifest.text();
-  const { routes } = JSON.parse(manifestContent);
+  const { routes, entryRoute } = JSON.parse(manifestContent);
 
   const route = routes[pathname];
-  if (!route) {
-    return htmlText;
+
+  const preloadModules = new Set<string>();
+
+  if (route) {
+    preloadModules.add(route);
   }
+
+  const glob = new Glob("**/*.js");
+  const relativePaths = await Array.fromAsync(glob.scan(staticDirectory));
+  const jsFiles = relativePaths.map(filePath => basename(filePath));
+
+  const entryRouteRequiredModules = await findRequiredModulesFromFile(entryRoute, jsFiles);
+  const routeRequiredModules = route ? await findRequiredModulesFromFile(route, jsFiles) : [];
+
+  for (const module of entryRouteRequiredModules) {
+    preloadModules.add(`/${module}`);
+  }
+
+  for (const module of routeRequiredModules) {
+    preloadModules.add(`/${module}`);
+  }
+
+  const preloadLinks = Array.from(preloadModules).map(module => `<link rel="modulepreload" href="${module}" />`).join("");
 
   const rewriter = new HTMLRewriter().on("head", {
     element(element) {
-      element.append(`<link rel="modulepreload" href="${route}" />`, { html: true });
+      element.append(preloadLinks, { html: true });
     },
   });
 

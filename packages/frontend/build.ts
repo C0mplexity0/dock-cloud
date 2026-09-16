@@ -35,6 +35,19 @@ const routeModules = {
 
 const outputs = Object.entries(result.metafile.outputs);
 
+let entryRoute: string | undefined = undefined;
+
+for (const output of outputs) {
+  if (output[1].entryPoint === "src/index.html" && output[0].endsWith(".js")) {
+    entryRoute = output[0];
+    break;
+  }
+}
+
+if (!entryRoute) {
+  throw new Error("No entry route found for src/index.html");
+}
+
 const routes = Object.fromEntries(
   Object.entries(routeModules).map(([route, sourceModule]) => {
     const [outputPath] = outputs.find(([, output]) =>
@@ -54,7 +67,7 @@ const routes = Object.fromEntries(
 
 await Bun.write(
   path.join(outdir, "route-manifest.json"),
-  JSON.stringify({ routes }, null, 2),
+  JSON.stringify({ routes, entryRoute }, null, 2),
 );
 
 const htmlFile = Bun.file("./dist/static/index.html");
