@@ -1,13 +1,18 @@
 import { hydrateRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
-import { routes } from "./routes";
+import { loadInitialRouteModules, routes } from "./routes";
 import { App } from "./App";
+import { RouterProvider } from "react-router/dom";
+
+await loadInitialRouteModules();
 
 const router = createBrowserRouter(routes);
 
 const elem = document.getElementById("root")!;
 const app = (
-  <App router={router} />
+  <App router={router}>
+    <RouterProvider router={router} />
+  </App>
 );
 
 // https://bun.com/docs/bundler/hot-reloading#import-meta-hot-data

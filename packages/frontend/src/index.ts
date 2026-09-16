@@ -54,10 +54,10 @@ async function injectModulePreloadLinks(htmlText: string, request: Request): Pro
 }
 
 async function renderSSR(htmlText: string, request: Request): Promise<string> {
-  const reactText = await render(request)
+  let reactText = await render(request)
 
   if (reactText instanceof Response) {
-    return await reactText.text();
+    reactText = await reactText.text();
   }
 
   const rewriter = new HTMLRewriter().on("#root", {

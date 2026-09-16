@@ -1,4 +1,6 @@
-export const routes = [
+import { matchRoutes, type RouteObject } from "react-router";
+
+export const routes: RouteObject[] = [
   {
     path: "/",
     lazy: () => import("./pages/index")
@@ -15,4 +17,19 @@ export const routes = [
     path: "*",
     lazy: () => import("./components/ui/page/not-found")
   }
-]
+];
+
+export async function loadInitialRouteModules() {
+  const matches = matchRoutes(routes, window.location);
+
+  await Promise.all(
+    (matches ?? []).map(async ({ route }) => {
+      if (!route.lazy) {
+        return;
+      }
+
+      const module = await route.lazy();
+      Object.assign(route, module, { lazy: undefined });
+    }),
+  );
+}

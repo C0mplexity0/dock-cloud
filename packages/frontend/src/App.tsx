@@ -1,13 +1,12 @@
-import { RouterProvider } from "react-router/dom";
 import { Toaster } from "./components/ui/sonner";
 import { StrictMode } from "react";
 import "../styles/globals.css"
 
-export function App({ router }: { router?: any } = {}) {
+export function App({ router, children }: { router?: any, children?: React.ReactNode } = {}) {
   return (
     <StrictMode>
       <div className="size-full">
-        <RouterProvider router={router} />
+        {children}
         <Toaster />
       </div>
     </StrictMode>

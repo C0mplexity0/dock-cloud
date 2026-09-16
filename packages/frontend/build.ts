@@ -35,8 +35,6 @@ const routeModules = {
 
 const outputs = Object.entries(result.metafile.outputs);
 
-console.log(outputs);
-
 const routes = Object.fromEntries(
   Object.entries(routeModules).map(([route, sourceModule]) => {
     const [outputPath] = outputs.find(([, output]) =>
