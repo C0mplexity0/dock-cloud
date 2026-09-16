@@ -1,6 +1,5 @@
 "use client"
 
-import { useTheme } from "next-themes"
 import { Toaster as Sonner, toast, type ToasterProps } from "sonner"
 import {
   IconCircleCheck,
@@ -15,11 +14,9 @@ import { Button } from "./button"
 export { toast }
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={"dark" as ToasterProps["theme"]}
       className="toaster group"
       icons={{
         success: <IconCircleCheck className="size-4" />,
