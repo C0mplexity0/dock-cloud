@@ -44,7 +44,9 @@ async function processRequest(request: Request) {
   });
 }
 
-function findRequiredModules(jsText: string, existingModules: string[]): string[] {
+function findRequiredModules(jsText: string, existingModules: string[], routes: Record<string, string>): string[] {
+  const routePaths = Object.values(routes);
+
   const matches = jsText.match(/chunk-[a-zA-Z0-9]+\.js/g);
   if (!matches) {
     return [];
@@ -53,7 +55,7 @@ function findRequiredModules(jsText: string, existingModules: string[]): string[
   const jsModules = [];
 
   for (const match of matches) {
-    if (existingModules.includes(match)) {
+    if (existingModules.includes(match) && !routePaths.includes(`/${match}`)) {
       jsModules.push(match);
     }
   }
@@ -61,11 +63,11 @@ function findRequiredModules(jsText: string, existingModules: string[]): string[
   return jsModules;
 }
 
-async function findRequiredModulesFromFile(filePath: string, jsFiles: string[]): Promise<string[]> {
+async function findRequiredModulesFromFile(filePath: string, jsFiles: string[], routes: Record<string, string>): Promise<string[]> {
   const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
   const file = Bun.file(path.join(staticDirectory, filePath));
   const text = await file.text();
-  const requiredModules = findRequiredModules(text, jsFiles);
+  const requiredModules = findRequiredModules(text, jsFiles, routes);
   return requiredModules;
 }
 
@@ -89,8 +91,8 @@ async function injectModulePreloadLinks(htmlText: string, request: Request): Pro
   const relativePaths = await Array.fromAsync(glob.scan(staticDirectory));
   const jsFiles = relativePaths.map(filePath => basename(filePath));
 
-  const entryRouteRequiredModules = await findRequiredModulesFromFile(entryRoute, jsFiles);
-  const routeRequiredModules = route ? await findRequiredModulesFromFile(route, jsFiles) : [];
+  const entryRouteRequiredModules = await findRequiredModulesFromFile(entryRoute, jsFiles, routes);
+  const routeRequiredModules = route ? await findRequiredModulesFromFile(route, jsFiles, routes) : [];
 
   for (const module of entryRouteRequiredModules) {
     preloadModules.add(`/${module}`);
