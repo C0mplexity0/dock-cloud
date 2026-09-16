@@ -24,7 +24,7 @@ export async function loadInitialRouteModules() {
 
   await Promise.all(
     (matches ?? []).map(async ({ route }) => {
-      if (!route.lazy) {
+      if (typeof route.lazy !== "function") {
         return;
       }
 
