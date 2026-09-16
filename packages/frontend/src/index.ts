@@ -2,26 +2,38 @@ import { serve } from "bun";
 import path from "node:path";
 import { render } from "./index-server";
 
-async function processRequest(request: Request) {
-    const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
-    const pathname = new URL(request.url).pathname;
-    const filePath = path.resolve(staticDirectory, pathname.slice(1));
+const htmlCache = new Map<string, string>();
 
-    if (filePath.startsWith(`${staticDirectory}${path.sep}`)) {
-      const file = Bun.file(filePath);
-      if (await file.exists()) {
-        return new Response(file, {
-          headers: {
-            "Cache-Control": "public, max-age=31536000, immutable",
-          },
-        });
-      }
+async function processRequest(request: Request) {
+  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const pathname = new URL(request.url).pathname;
+  const filePath = path.resolve(staticDirectory, pathname.slice(1));
+
+  if (htmlCache.get(pathname)) {
+    return new Response(htmlCache.get(pathname), {
+      headers: {
+        "Content-Type": "text/html",
+      },
+    });
+  }
+
+  if (filePath.startsWith(`${staticDirectory}${path.sep}`)) {
+    const file = Bun.file(filePath);
+    if (await file.exists()) {
+      return new Response(file, {
+        headers: {
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
     }
+  }
 
   const htmlFile = Bun.file(path.join(import.meta.dir, "../dist/static/index.html"));
   let html = await htmlFile.text();
   html = await injectModulePreloadLinks(html, request);
   html = await renderSSR(html, request);
+
+  htmlCache.set(pathname, html);
 
   return new Response(html, {
     headers: {
