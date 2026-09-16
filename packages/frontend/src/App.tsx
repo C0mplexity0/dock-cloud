@@ -6,7 +6,7 @@ import { Toaster } from "./components/ui/sonner";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <H1>Home</H1>
+    lazy: () => import("./pages/index")
   },
   {
     path: "/login",
