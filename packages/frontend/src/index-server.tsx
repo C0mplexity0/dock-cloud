@@ -1,4 +1,8 @@
-import { createStaticHandler, createStaticRouter, StaticRouterProvider } from "react-router";
+import {
+  createStaticHandler,
+  createStaticRouter,
+  StaticRouterProvider,
+} from "react-router";
 import { routes } from "./routes";
 import { renderToString } from "react-dom/server";
 import { App } from "./App";
@@ -13,8 +17,8 @@ export async function render(request: Request) {
 
   const router = createStaticRouter(dataRoutes, context);
   return renderToString(
-    <App router={router}>
+    <App>
       <StaticRouterProvider router={router} context={context} hydrate={false} />
-    </App>
-  )
+    </App>,
+  );
 }

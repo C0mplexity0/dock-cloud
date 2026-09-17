@@ -1,5 +1,5 @@
-import { cn } from "@lib/utils"
-import { H1 } from "./typography"
+import { cn } from "@lib/utils";
+import { H1 } from "./typography";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -8,7 +8,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("animate-pulse rounded-md bg-muted", className)}
       {...props}
     />
-  )
+  );
 }
 
 export function SkeletonDemo() {
@@ -23,7 +23,7 @@ export function SkeletonDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };

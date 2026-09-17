@@ -1,6 +1,6 @@
-import { cn } from "@dock-cloud/ui/lib/utils"
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import { Button } from "../button"
+import { cn } from "@dock-cloud/ui/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
+import { Button } from "../button";
 
 export function AccountAvatar({
   profileImage,
@@ -8,10 +8,10 @@ export function AccountAvatar({
   className,
   button,
 }: {
-  profileImage?: string
-  profileName?: string
-  className?: string
-  button?: boolean
+  profileImage?: string;
+  profileName?: string;
+  className?: string;
+  button?: boolean;
 }) {
   return (
     <Avatar
@@ -28,5 +28,5 @@ export function AccountAvatar({
       <AvatarImage alt={profileName || "Profile"} src={profileImage} />
       <AvatarFallback className={className}>{profileName?.[0]}</AvatarFallback>
     </Avatar>
-  )
+  );
 }

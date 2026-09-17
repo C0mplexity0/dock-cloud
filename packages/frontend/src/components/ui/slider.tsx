@@ -1,7 +1,7 @@
-import { Slider as SliderPrimitive } from "@base-ui/react/slider"
+import { Slider as SliderPrimitive } from "@base-ui/react/slider";
 
-import { cn } from "@lib/utils"
-import { H1 } from "./typography"
+import { cn } from "@lib/utils";
+import { H1 } from "./typography";
 
 function Slider({
   className,
@@ -15,13 +15,13 @@ function Slider({
     ? value
     : Array.isArray(defaultValue)
       ? defaultValue
-      : [min, max]
+      : [min, max];
 
   return (
     <SliderPrimitive.Root
       className={cn(
         "data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full",
-        className
+        className,
       )}
       data-slot="slider"
       defaultValue={defaultValue}
@@ -50,7 +50,7 @@ function Slider({
         ))}
       </SliderPrimitive.Control>
     </SliderPrimitive.Root>
-  )
+  );
 }
 
 export function SliderDemo() {
@@ -59,7 +59,7 @@ export function SliderDemo() {
       <H1>Slider</H1>
       <Slider defaultValue={[33]} max={100} step={0.01} />
     </div>
-  )
+  );
 }
 
-export { Slider }
+export { Slider };

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
+import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
 
-import { cn } from "@lib/utils"
-import { H1 } from "./typography"
+import { cn } from "@lib/utils";
+import { H1 } from "./typography";
 
 function Separator({
   className,
@@ -16,11 +16,11 @@ function Separator({
       orientation={orientation}
       className={cn(
         "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function SeparatorDemo() {
@@ -35,7 +35,7 @@ export function SeparatorDemo() {
         <div>Item 3</div>
       </div>
     </div>
-  )
+  );
 }
 
-export { Separator }
+export { Separator };

@@ -1,7 +1,7 @@
-import { cn } from "@lib/utils"
-import { IconLoader } from "@tabler/icons-react"
-import { H1 } from "./typography"
-import { Button } from "./button"
+import { cn } from "@lib/utils";
+import { IconLoader } from "@tabler/icons-react";
+import { H1 } from "./typography";
+import { Button } from "./button";
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (
@@ -12,7 +12,7 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
       className={cn("size-4 animate-spin", className)}
       {...props}
     />
-  )
+  );
 }
 
 export function SpinnerDemo() {
@@ -25,7 +25,7 @@ export function SpinnerDemo() {
         Loading...
       </Button>
     </div>
-  )
+  );
 }
 
-export { Spinner }
+export { Spinner };

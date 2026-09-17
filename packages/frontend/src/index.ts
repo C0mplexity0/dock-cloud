@@ -30,7 +30,9 @@ async function processRequest(request: Request) {
     }
   }
 
-  const htmlFile = Bun.file(path.join(import.meta.dir, "../dist/static/index.html"));
+  const htmlFile = Bun.file(
+    path.join(import.meta.dir, "../dist/static/index.html"),
+  );
   let html = await htmlFile.text();
   html = await injectModulePreloadLinks(html, request);
   html = await renderSSR(html, request);
@@ -44,7 +46,11 @@ async function processRequest(request: Request) {
   });
 }
 
-function findRequiredModules(jsText: string, existingModules: string[], routes: Record<string, string>): string[] {
+function findRequiredModules(
+  jsText: string,
+  existingModules: string[],
+  routes: Record<string, string>,
+): string[] {
   const routePaths = Object.values(routes);
 
   const matches = jsText.match(/chunk-[a-zA-Z0-9]+\.js/g);
@@ -63,7 +69,11 @@ function findRequiredModules(jsText: string, existingModules: string[], routes: 
   return jsModules;
 }
 
-async function findRequiredModulesFromFile(filePath: string, jsFiles: string[], routes: Record<string, string>): Promise<string[]> {
+async function findRequiredModulesFromFile(
+  filePath: string,
+  jsFiles: string[],
+  routes: Record<string, string>,
+): Promise<string[]> {
   const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
   const file = Bun.file(path.join(staticDirectory, filePath));
   const text = await file.text();
@@ -71,11 +81,16 @@ async function findRequiredModulesFromFile(filePath: string, jsFiles: string[], 
   return requiredModules;
 }
 
-async function injectModulePreloadLinks(htmlText: string, request: Request): Promise<string> {
+async function injectModulePreloadLinks(
+  htmlText: string,
+  request: Request,
+): Promise<string> {
   const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
   const pathname = new URL(request.url).pathname;
 
-  const manifest = Bun.file(path.join(staticDirectory, "../route-manifest.json"));
+  const manifest = Bun.file(
+    path.join(staticDirectory, "../route-manifest.json"),
+  );
   const manifestContent = await manifest.text();
   const { routes, entryRoute } = JSON.parse(manifestContent);
 
@@ -89,10 +104,16 @@ async function injectModulePreloadLinks(htmlText: string, request: Request): Pro
 
   const glob = new Glob("**/*.js");
   const relativePaths = await Array.fromAsync(glob.scan(staticDirectory));
-  const jsFiles = relativePaths.map(filePath => basename(filePath));
+  const jsFiles = relativePaths.map((filePath) => basename(filePath));
 
-  const entryRouteRequiredModules = await findRequiredModulesFromFile(entryRoute, jsFiles, routes);
-  const routeRequiredModules = route ? await findRequiredModulesFromFile(route, jsFiles, routes) : [];
+  const entryRouteRequiredModules = await findRequiredModulesFromFile(
+    entryRoute,
+    jsFiles,
+    routes,
+  );
+  const routeRequiredModules = route
+    ? await findRequiredModulesFromFile(route, jsFiles, routes)
+    : [];
 
   for (const module of entryRouteRequiredModules) {
     preloadModules.add(`/${module}`);
@@ -102,7 +123,9 @@ async function injectModulePreloadLinks(htmlText: string, request: Request): Pro
     preloadModules.add(`/${module}`);
   }
 
-  const preloadLinks = Array.from(preloadModules).map(module => `<link rel="modulepreload" href="${module}" />`).join("");
+  const preloadLinks = Array.from(preloadModules)
+    .map((module) => `<link rel="modulepreload" href="${module}" />`)
+    .join("");
 
   const rewriter = new HTMLRewriter().on("head", {
     element(element) {
@@ -115,7 +138,7 @@ async function injectModulePreloadLinks(htmlText: string, request: Request): Pro
 }
 
 async function renderSSR(htmlText: string, request: Request): Promise<string> {
-  let reactText = await render(request)
+  let reactText = await render(request);
 
   if (reactText instanceof Response) {
     reactText = await reactText.text();
@@ -136,9 +159,11 @@ const server = serve({
     const initialTime = performance.now();
     const response = await processRequest(request);
     const duration = performance.now() - initialTime;
-    console.log(`${request.method} ${request.url} - ${response.status} - ${duration.toFixed(2)}ms`);
+    console.log(
+      `${request.method} ${request.url} - ${response.status} - ${duration.toFixed(2)}ms`,
+    );
     return response;
-  }
+  },
 });
 
 console.log(`Server running at ${server.url}`);

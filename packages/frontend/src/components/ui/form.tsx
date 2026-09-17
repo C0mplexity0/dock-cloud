@@ -1,5 +1,5 @@
-import { Form as FormPrimitive } from "@base-ui/react"
-import { H1 } from "./typography"
+import { Form as FormPrimitive } from "@base-ui/react";
+import { H1 } from "./typography";
 import {
   Field,
   FieldDescription,
@@ -7,12 +7,12 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "./field"
-import { Input } from "./input"
-import { Button } from "./button"
+} from "./field";
+import { Input } from "./input";
+import { Button } from "./button";
 
 export function Form({ ...props }: FormPrimitive.Props) {
-  return <FormPrimitive {...props} />
+  return <FormPrimitive {...props} />;
 }
 
 export function FormDemo() {
@@ -21,9 +21,9 @@ export function FormDemo() {
       <H1>Form</H1>
       <Form
         onSubmit={(e) => {
-          e.preventDefault()
-          const formData = new FormData(e.currentTarget)
-          console.log(formData.get("test1"), formData.get("test2"))
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          console.log(formData.get("test1"), formData.get("test2"));
         }}
       >
         <FieldSet>
@@ -55,5 +55,5 @@ export function FormDemo() {
         </Button>
       </Form>
     </div>
-  )
+  );
 }

@@ -1,26 +1,24 @@
-import { useState } from "react"
-import z from "zod"
-import { Field, FieldLabel, FieldSet } from "./ui/field"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group"
-import { Toggle } from "./ui/toggle"
-import { IconEye, IconEyeOff } from "@tabler/icons-react"
-import { toast } from "./ui/sonner"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
-import { Link } from "./ui/link"
-import { H3, P } from "./ui/typography"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
-import { Spinner } from "./ui/spinner"
-import { Form } from "./ui/form"
+import { useState } from "react";
+import { Field, FieldLabel, FieldSet } from "./ui/field";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { Toggle } from "./ui/toggle";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Link } from "./ui/link";
+import { H3, P } from "./ui/typography";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Spinner } from "./ui/spinner";
+import { Form } from "./ui/form";
 
 function PasswordInput({
   label = "Password",
   name = "password",
 }: {
-  label?: string
-  name?: string
+  label?: string;
+  name?: string;
 }) {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Field>
@@ -47,7 +45,7 @@ function PasswordInput({
         </InputGroupAddon>
       </InputGroup>
     </Field>
-  )
+  );
 }
 
 /**
@@ -55,60 +53,60 @@ function PasswordInput({
  * @param error The ZodError object containing validation issues.
  * @returns void
  */
-function showMessageForInputError(error: z.ZodError) {
-  const issue = error.issues[0]
-  console.log(issue)
+/*function showMessageForInputError(error: z.ZodError) {
+  const issue = error.issues[0];
+  console.log(issue);
 
   if (!issue) {
-    toast.error("Please fill in all fields.")
-    return
+    toast.error("Please fill in all fields.");
+    return;
   }
 
   switch (issue.path[0]) {
     case "email":
       if (issue.code === "invalid_format") {
-        toast.error("Please enter a valid email address.")
-        return
+        toast.error("Please enter a valid email address.");
+        return;
       }
-      break
+      break;
     case "password":
       if (issue.code === "too_small") {
-        toast.error("Password must be at least 8 characters long.")
-        return
+        toast.error("Password must be at least 8 characters long.");
+        return;
       }
-      break
+      break;
     case "name":
       if (issue.code === "invalid_type") {
-        toast.error("Please enter a name.")
-        return
+        toast.error("Please enter a name.");
+        return;
       }
-      break
+      break;
   }
 
-  toast.error("Please fill in all fields.")
-  return
-}
+  toast.error("Please fill in all fields.");
+  return;
+}*/
 
 export function LogInSignUpPages({ action }: { action: "login" | "signup" }) {
-  const [loading, setLoading] = useState(false)
+  const [loading /*, setLoading*/] = useState(false);
 
-  function onRequest() {
-    setLoading(true)
+  /*function onRequest() {
+    setLoading(true);
   }
 
   function onSuccess() {
-    setLoading(false)
-    window.location.reload()
+    setLoading(false);
+    window.location.reload();
   }
 
   function onError(error: Error) {
-    setLoading(false)
+    setLoading(false);
     if (!error.message) {
-      toast.error("An unknown error occurred. Please try again.")
-      return
+      toast.error("An unknown error occurred. Please try again.");
+      return;
     }
-    toast.error(error.message)
-  }
+    toast.error(error.message);
+  }*/
 
   return (
     <div className="flex size-full items-center justify-center">
@@ -132,7 +130,7 @@ export function LogInSignUpPages({ action }: { action: "login" | "signup" }) {
         <TabsContent value="signup">
           <Form
             onSubmit={(e) => {
-              e.preventDefault()
+              e.preventDefault();
               /*const formData = new FormData(e.currentTarget)
 
               const inputs = z.safeParse(SignUpFields, {
@@ -196,7 +194,7 @@ export function LogInSignUpPages({ action }: { action: "login" | "signup" }) {
         <TabsContent value="login">
           <Form
             onSubmit={(e) => {
-              e.preventDefault()
+              e.preventDefault();
               /*const formData = new FormData(e.currentTarget)
 
               const inputs = z.safeParse(LogInFields, {
@@ -246,5 +244,5 @@ export function LogInSignUpPages({ action }: { action: "login" | "signup" }) {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { cn } from "@lib/utils"
+import { cn } from "@lib/utils";
 
 export function H1({
   className,
@@ -8,11 +8,11 @@ export function H1({
     <h1
       className={cn(
         "mb-4 text-4xl font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function H2({
@@ -23,11 +23,11 @@ export function H2({
     <h2
       className={cn(
         "mb-3 text-3xl font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function H3({
@@ -38,11 +38,11 @@ export function H3({
     <h3
       className={cn(
         "mb-1.5 text-2xl font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function H4({
@@ -53,11 +53,11 @@ export function H4({
     <h4
       className={cn(
         "mb-1.5 text-2xl font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function H5({
@@ -68,11 +68,11 @@ export function H5({
     <h5
       className={cn(
         "mb-1 text-xl font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function H6({
@@ -83,18 +83,18 @@ export function H6({
     <h6
       className={cn(
         "mb-1 text-lg font-bold tracking-tight text-foreground",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function P({
   className,
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("leading-7", className)} {...props} />
+  return <p className={cn("leading-7", className)} {...props} />;
 }
 
 export function TypographyDemo() {
@@ -109,5 +109,5 @@ export function TypographyDemo() {
       <H6>H6 Lorem Ipsum</H6>
       <P>Paragraph</P>
     </div>
-  )
+  );
 }

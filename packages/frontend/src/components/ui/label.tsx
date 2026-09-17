@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@lib/utils"
-import { H1 } from "./typography"
-import { Input } from "./input"
+import { cn } from "@lib/utils";
+import { H1 } from "./typography";
+import { Input } from "./input";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
@@ -12,11 +12,11 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
       data-slot="label"
       className={cn(
         "flex items-center gap-2 px-1 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export function LabelDemo() {
@@ -26,7 +26,7 @@ export function LabelDemo() {
       <Label htmlFor="input">Label</Label>
       <Input id="input" placeholder="Input" className="rounded-md border p-2" />
     </div>
-  )
+  );
 }
 
-export { Label }
+export { Label };

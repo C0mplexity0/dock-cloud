@@ -50,14 +50,17 @@ if (!entryRoute) {
 
 const routes = Object.fromEntries(
   Object.entries(routeModules).map(([route, sourceModule]) => {
-    const [outputPath] = outputs.find(([, output]) =>
-      Object.keys(output.inputs).some((input) =>
-        input.endsWith(sourceModule),
-      ),
-    ) ?? [];
+    const [outputPath] =
+      outputs.find(([, output]) =>
+        Object.keys(output.inputs).some((input) =>
+          input.endsWith(sourceModule),
+        ),
+      ) ?? [];
 
     if (!outputPath) {
-      throw new Error(`No emitted chunk found for route module: ${sourceModule}`);
+      throw new Error(
+        `No emitted chunk found for route module: ${sourceModule}`,
+      );
     }
 
     const absoluteOutputPath = path.resolve(outdir, outputPath);
@@ -83,5 +86,7 @@ const compressedHtml = await minify(htmlContent, {
 await Bun.write("./dist/static/index.html", compressedHtml);
 
 for (const output of result.outputs) {
-  console.log(` ${path.relative(process.cwd(), output.path)}  ${(output.size / 1024).toFixed(1)} KB`);
+  console.log(
+    ` ${path.relative(process.cwd(), output.path)}  ${(output.size / 1024).toFixed(1)} KB`,
+  );
 }

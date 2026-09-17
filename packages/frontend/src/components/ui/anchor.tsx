@@ -1,7 +1,7 @@
-import { mergeProps, useRender } from "@base-ui/react"
-import { cn } from "@lib/utils"
-import { IconArrowUpRight } from "@tabler/icons-react"
-import { H1 } from "./typography"
+import { mergeProps, useRender } from "@base-ui/react";
+import { cn } from "@lib/utils";
+import { IconArrowUpRight } from "@tabler/icons-react";
+import { H1 } from "./typography";
 
 export function Anchor({
   className,
@@ -14,13 +14,13 @@ export function Anchor({
       {
         className: cn(
           "text-sky-700 underline underline-offset-3 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-200",
-          className
+          className,
         ),
       },
-      props
+      props,
     ),
     render,
-  })
+  });
 }
 
 export function AnchorExternalIcon({
@@ -32,7 +32,7 @@ export function AnchorExternalIcon({
       className={cn("ml-px inline size-4", className)}
       {...props}
     />
-  )
+  );
 }
 
 export function AnchorDemo() {
@@ -45,5 +45,5 @@ export function AnchorDemo() {
         <AnchorExternalIcon />
       </Anchor>
     </div>
-  )
+  );
 }

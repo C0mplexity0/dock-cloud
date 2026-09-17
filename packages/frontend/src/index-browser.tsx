@@ -10,7 +10,7 @@ const router = createBrowserRouter(routes);
 
 const elem = document.getElementById("root")!;
 const app = (
-  <App router={router}>
+  <App>
     <RouterProvider router={router} />
   </App>
 );

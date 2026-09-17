@@ -1,19 +1,19 @@
-import { IconLogout, IconSettings } from "@tabler/icons-react"
+import { IconLogout, IconSettings } from "@tabler/icons-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../dropdown-menu"
-import { AccountAvatar } from "./avatar"
+} from "../dropdown-menu";
+import { AccountAvatar } from "./avatar";
 
 export default function AccountProfileButton({
   profileImage,
   profileName,
 }: {
-  profileImage?: string
-  profileName?: string
+  profileImage?: string;
+  profileName?: string;
 }) {
   return (
     <DropdownMenu>
@@ -37,5 +37,5 @@ export default function AccountProfileButton({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

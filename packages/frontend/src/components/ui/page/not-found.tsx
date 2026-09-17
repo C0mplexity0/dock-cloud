@@ -1,7 +1,7 @@
-import { IconAlertTriangleFilled } from "@tabler/icons-react"
-import { Button } from "../button"
-import { H1, P } from "../typography"
-import { Link } from "@components/ui/link"
+import { IconAlertTriangleFilled } from "@tabler/icons-react";
+import { Button } from "../button";
+import { H1, P } from "../typography";
+import { Link } from "@components/ui/link";
 
 export function NotFoundPage() {
   return (
@@ -14,10 +14,12 @@ export function NotFoundPage() {
         <P>
           Oops! This page could not be found. It may have been moved or deleted.
         </P>
-        <Button className="mt-5" nativeButton={false}  render={<Link to="/" />}>Return Home</Button>
+        <Button className="mt-5" nativeButton={false} render={<Link to="/" />}>
+          Return Home
+        </Button>
       </div>
     </main>
-  )
+  );
 }
 
 export { NotFoundPage as Component };

@@ -1,4 +1,4 @@
-import { H1 } from "../typography"
+import { H1 } from "../typography";
 
 export function DockLogo({ ...props }: React.SVGProps<SVGSVGElement>) {
   return (
@@ -19,7 +19,7 @@ export function DockLogo({ ...props }: React.SVGProps<SVGSVGElement>) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function DockLogoDemo() {
@@ -29,5 +29,5 @@ export function DockLogoDemo() {
       <DockLogo className="h-16 w-auto" />
       <DockLogo className="h-16 w-auto text-logo-primary" />
     </div>
-  )
+  );
 }

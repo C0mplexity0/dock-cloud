@@ -3,20 +3,20 @@ import { matchRoutes, type RouteObject } from "react-router";
 export const routes: RouteObject[] = [
   {
     path: "/",
-    lazy: () => import("./pages/index")
+    lazy: () => import("./pages/index"),
   },
   {
     path: "/login",
-    lazy: () => import("./pages/login")
+    lazy: () => import("./pages/login"),
   },
   {
     path: "/signup",
-    lazy: () => import("./pages/signup")
+    lazy: () => import("./pages/signup"),
   },
   {
     path: "*",
-    lazy: () => import("./components/ui/page/not-found")
-  }
+    lazy: () => import("./components/ui/page/not-found"),
+  },
 ];
 
 export async function loadInitialRouteModules() {

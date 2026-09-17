@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { Toaster as Sonner, toast, type ToasterProps } from "sonner"
+import { Toaster as Sonner, toast, type ToasterProps } from "sonner";
 import {
   IconCircleCheck,
   IconInfoCircle,
   IconAlertTriangle,
   IconAlertOctagon,
   IconLoader,
-} from "@tabler/icons-react"
-import { H1 } from "./typography"
-import { Button } from "./button"
+} from "@tabler/icons-react";
+import { H1 } from "./typography";
+import { Button } from "./button";
 
-export { toast }
+export { toast };
 
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
@@ -40,8 +40,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
 export function ToastDemo() {
   return (
@@ -56,13 +56,13 @@ export function ToastDemo() {
               label: "Undo",
               onClick: () => alert("Undo action clicked!"),
             },
-          })
+          });
         }}
       >
         Show Toast
       </Button>
     </div>
-  )
+  );
 }
 
-export { Toaster }
+export { Toaster };

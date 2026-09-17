@@ -1,9 +1,9 @@
-import { CheckboxGroup as CheckboxGroupPrimitive } from "@base-ui/react/checkbox-group"
-import { cn } from "@lib/utils"
-import { Field } from "./field"
-import { Label } from "./label"
-import { Checkbox } from "./checkbox"
-import { H1 } from "./typography"
+import { CheckboxGroup as CheckboxGroupPrimitive } from "@base-ui/react/checkbox-group";
+import { cn } from "@lib/utils";
+import { Field } from "./field";
+import { Label } from "./label";
+import { Checkbox } from "./checkbox";
+import { H1 } from "./typography";
 
 export function CheckboxGroup({
   className,
@@ -14,7 +14,7 @@ export function CheckboxGroup({
       className={cn("flex flex-col gap-2", className)}
       {...props}
     />
-  )
+  );
 }
 
 export function CheckboxGroupDemo() {
@@ -32,5 +32,5 @@ export function CheckboxGroupDemo() {
         </Field>
       </CheckboxGroup>
     </div>
-  )
+  );
 }
