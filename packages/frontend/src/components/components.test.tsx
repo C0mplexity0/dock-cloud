@@ -40,18 +40,13 @@ import { TooltipDemo } from "./ui/tooltip";
 import { TypographyDemo } from "./ui/typography";
 import type { ReactNode } from "react";
 
-const { render, screen } = await import("@testing-library/react");
+const { render, screen, act } = await import("@testing-library/react");
 
 const components = [
   {
     component: <AlertDemo />,
     componentName: "Alert",
     targetString: "Action",
-  },
-  {
-    component: <AlertDialogueDemo />,
-    componentName: "AlertDialogue",
-    targetString: "Alert Dialogue",
   },
   {
     component: <AnchorDemo />,
@@ -249,4 +244,25 @@ components.forEach((component) => {
     component.componentName,
     component.targetString,
   );
+});
+
+// Custom tests for components which need further testing for full coverage
+
+test("renders the AlertDialogueDemo component correctly", () => {
+  render(<AlertDialogueDemo />);
+
+  const element = screen.getAllByText("Alert Dialogue");
+  expect(element).toBeTruthy();
+
+  act(() => {
+    const openButton = screen.getByText("Open Alert Dialogue");
+    openButton.click();
+  });
+
+  const actionButton = screen.getByText("Delete Project");
+  expect(actionButton).toBeTruthy();
+
+  act(() => {
+    actionButton.click();
+  });
 });
