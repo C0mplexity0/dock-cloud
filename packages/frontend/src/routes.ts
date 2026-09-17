@@ -20,7 +20,7 @@ export const routes: RouteObject[] = [
 ];
 
 export async function loadInitialRouteModules() {
-  const matches = matchRoutes(routes, window.location);
+  const matches = matchRoutes(routes, globalThis.location);
 
   await Promise.all(
     (matches ?? []).map(async ({ route }) => {

@@ -1,9 +1,11 @@
-import "../happy-dom-env";
-
-import { test } from "bun:test";
+import { afterEach, test } from "bun:test";
 import { loadInitialRouteModules } from "./routes";
 
 test("loading route modules", async () => {
+  const originalLocation = Object.getOwnPropertyDescriptor(
+    globalThis,
+    "location",
+  );
   const mockLocation = {
     href: "https://example.com",
     pathname: "/",
@@ -17,4 +19,12 @@ test("loading route modules", async () => {
   });
 
   await loadInitialRouteModules();
+
+  afterEach(() => {
+    if (originalLocation) {
+      Object.defineProperty(globalThis, "location", originalLocation);
+    } else {
+      delete globalThis.location;
+    }
+  });
 });
