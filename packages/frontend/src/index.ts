@@ -4,9 +4,9 @@ import path, { basename } from "node:path";
 import { render } from "./index-server";
 
 const htmlCache = new Map<string, string>();
-const distDirectory = path.join(import.meta.dir, "dist");
+const defaultDistDirectory = path.join(import.meta.dir, "dist");
 
-async function processRequest(request: Request) {
+async function processRequest(request: Request, distDirectory: string) {
   const pathname = new URL(request.url).pathname;
 
   if (htmlCache.get(pathname)) {
@@ -33,7 +33,7 @@ async function processRequest(request: Request) {
 
   const htmlFile = Bun.file(path.join(distDirectory, "static/index.html"));
   let html = await htmlFile.text();
-  html = await injectModulePreloadLinks(html, request);
+  html = await injectModulePreloadLinks(html, request, distDirectory);
   html = await renderSSR(html, request);
 
   htmlCache.set(pathname, html);
@@ -72,6 +72,7 @@ async function findRequiredModulesFromFile(
   filePath: string,
   jsFiles: string[],
   routes: Record<string, string>,
+  distDirectory: string,
 ): Promise<string[]> {
   const staticDirectory = path.join(distDirectory, "static");
   const file = Bun.file(path.join(staticDirectory, filePath));
@@ -83,6 +84,7 @@ async function findRequiredModulesFromFile(
 async function injectModulePreloadLinks(
   htmlText: string,
   request: Request,
+  distDirectory: string,
 ): Promise<string> {
   const staticDirectory = path.join(distDirectory, "static");
   const pathname = new URL(request.url).pathname;
@@ -109,9 +111,10 @@ async function injectModulePreloadLinks(
     entryRoute,
     jsFiles,
     routes,
+    distDirectory,
   );
   const routeRequiredModules = route
-    ? await findRequiredModulesFromFile(route, jsFiles, routes)
+    ? await findRequiredModulesFromFile(route, jsFiles, routes, distDirectory)
     : [];
 
   for (const module of entryRouteRequiredModules) {
@@ -153,19 +156,27 @@ async function renderSSR(htmlText: string, request: Request): Promise<string> {
   return newHtml;
 }
 
-const startTime = performance.now();
+export function startWebserver({
+  distDirectory = defaultDistDirectory,
+}: {
+  distDirectory?: string;
+} = {}) {
+  const startTime = performance.now();
 
-const server = serve({
-  async fetch(request) {
-    const initialTime = performance.now();
-    const response = await processRequest(request);
-    const duration = performance.now() - initialTime;
-    console.log(
-      `${request.method} ${request.url} - ${response.status} - ${duration.toFixed(2)}ms`,
-    );
-    return response;
-  },
-});
+  const server = serve({
+    async fetch(request) {
+      const initialTime = performance.now();
+      const response = await processRequest(request, distDirectory);
+      const duration = performance.now() - initialTime;
+      console.log(
+        `${request.method} ${request.url} - ${response.status} - ${duration.toFixed(2)}ms`,
+      );
+      return response;
+    },
+  });
 
-console.log(`Server running at ${server.url}`);
-console.log(`Startup time: ${(performance.now() - startTime).toFixed(2)}ms`);
+  console.log(`Server running at ${server.url}`);
+  console.log(`Startup time: ${(performance.now() - startTime).toFixed(2)}ms`);
+
+  return server;
+}
