@@ -64,4 +64,11 @@ describe("Webserver tests", () => {
 
     expect(text1).toBe(text2);
   });
+
+  test("fetching static file", async () => {
+    const response = await fetch(new URL("/entry.js", server.url));
+    expect(response.status).toBe(200);
+    const text = await response.text();
+    expect(text).toContain("console.log('entry');");
+  });
 });
