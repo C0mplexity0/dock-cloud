@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@types/bun": "^1.4.2",
+    "@types/lcov-parse": "^1.0.2",
+    "console-table-printer": "^2.16.1",
     "eslint": "9",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.12.0",
+    "lcov-parse": "^1.0.0",
+    "lcov-result-merger": "^6.0.0",
     "prettier": "3.9.7",
     "typescript": "^6.0.0-0",
     "typescript-eslint": "8.70.0"
@@ -21,10 +26,10 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "frontend:build": "bun run --filter @dock-cloud/frontend build"
+    "frontend:build": "bun run --filter @dock-cloud/frontend build",
+    "test": "bun run scripts/test.ts"
   },
   "workspaces": [
     "packages/*"
-  ],
-  "dependencies": {}
+  ]
 }

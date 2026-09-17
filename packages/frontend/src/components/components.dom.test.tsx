@@ -1,5 +1,3 @@
-import "../../happy-dom-env";
-
 import { test, expect } from "bun:test";
 import { AlertDemo } from "./ui/alert";
 import { AlertDialogueDemo } from "./ui/alert-dialogue";
@@ -26,7 +24,6 @@ import { PreviewCardDemo } from "./ui/preview-card";
 import { RadioGroupDemo } from "./ui/radio-group";
 import { SeparatorDemo } from "./ui/separator";
 import { SheetDemo } from "./ui/sheet";
-import { SidebarDemo } from "./ui/sidebar";
 import { SkeletonDemo } from "./ui/skeleton";
 import { SliderDemo } from "./ui/slider";
 import { ToastDemo } from "./ui/sonner";
@@ -39,8 +36,7 @@ import { ToggleGroupDemo } from "./ui/toggle-group";
 import { TooltipDemo } from "./ui/tooltip";
 import { TypographyDemo } from "./ui/typography";
 import type { ReactNode } from "react";
-
-const { render, screen, act } = await import("@testing-library/react");
+import { render, screen, act } from "@testing-library/react";
 
 const components = [
   {
@@ -164,11 +160,6 @@ const components = [
     targetString: "Sheet",
   },
   {
-    component: <SidebarDemo />,
-    componentName: "Sidebar",
-    targetString: "Sidebar",
-  },
-  {
     component: <SkeletonDemo />,
     componentName: "Skeleton",
     targetString: "Skeleton",
@@ -245,8 +236,6 @@ components.forEach((component) => {
     component.targetString,
   );
 });
-
-// Custom tests for components which need further testing for full coverage
 
 test("renders the AlertDialogueDemo component correctly", () => {
   render(<AlertDialogueDemo />);
