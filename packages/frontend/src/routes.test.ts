@@ -1,11 +1,20 @@
 import { afterEach, test } from "bun:test";
 import { loadInitialRouteModules } from "./routes";
 
+const originalLocation = Object.getOwnPropertyDescriptor(
+  globalThis,
+  "location",
+);
+
+afterEach(() => {
+  if (originalLocation) {
+    Object.defineProperty(globalThis, "location", originalLocation);
+  } else {
+    Reflect.deleteProperty(globalThis, "location");
+  }
+});
+
 test("loading route modules", async () => {
-  const originalLocation = Object.getOwnPropertyDescriptor(
-    globalThis,
-    "location",
-  );
   const mockLocation = {
     href: "https://example.com",
     pathname: "/",
@@ -19,12 +28,4 @@ test("loading route modules", async () => {
   });
 
   await loadInitialRouteModules();
-
-  afterEach(() => {
-    if (originalLocation) {
-      Object.defineProperty(globalThis, "location", originalLocation);
-    } else {
-      delete globalThis.location;
-    }
-  });
 });
