@@ -92,7 +92,7 @@ for (const output of result.outputs) {
 }
 
 const binary = await Bun.build({
-  entrypoints: ["index.ts"],
+  entrypoints: ["src/index.ts"],
   compile: {
     outfile: path.join(outdir, "frontend"),
   },
