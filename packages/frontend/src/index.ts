@@ -6,6 +6,10 @@ import { render } from "./index-server";
 const htmlCache = new Map<string, string>();
 const defaultDistDirectory = path.join(import.meta.dir, "dist");
 
+export function getHtmlCache() {
+  return htmlCache;
+}
+
 async function processRequest(request: Request, distDirectory: string) {
   const pathname = new URL(request.url).pathname;
 

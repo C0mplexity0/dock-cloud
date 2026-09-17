@@ -1,5 +1,5 @@
 import { expect, test, describe, beforeAll, afterAll } from "bun:test";
-import { startWebserver } from ".";
+import { startWebserver, getHtmlCache } from ".";
 import type { Server } from "bun";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -49,5 +49,19 @@ describe("Webserver tests", () => {
     if (rootDiv) {
       expect(rootDiv.innerHTML).not.toBe("");
     }
+  });
+
+  test("HTML cache", async () => {
+    const response1 = await fetch(new URL("/exampleroute", server.url));
+    const text1 = await response1.text();
+
+    const cache = getHtmlCache().get("/exampleroute");
+    expect(cache).toBeDefined();
+    expect(cache).not.toBeNull();
+
+    const response2 = await fetch(new URL("/exampleroute", server.url));
+    const text2 = await response2.text();
+
+    expect(text1).toBe(text2);
   });
 });
