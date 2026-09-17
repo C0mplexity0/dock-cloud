@@ -6,6 +6,7 @@ import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
 import { cn } from "@lib/utils";
 import { Button } from "@components/ui/button";
 import { IconX } from "@tabler/icons-react";
+import { H1 } from "./typography";
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -122,6 +123,23 @@ function SheetDescription({
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
+  );
+}
+
+export function SheetDemo() {
+  return (
+    <div className="flex flex-col gap-2">
+      <H1>Sheet</H1>
+      <Sheet>
+        <SheetTrigger render={<Button className="w-fit">Open Sheet</Button>} />
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Sheet</SheetTitle>
+            <SheetDescription>Sheet content goes here.</SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }
 

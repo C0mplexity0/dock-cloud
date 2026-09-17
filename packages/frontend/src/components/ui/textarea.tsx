@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@lib/utils";
+import { H1 } from "./typography";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (
@@ -12,6 +13,15 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
       )}
       {...props}
     />
+  );
+}
+
+export function TextareaDemo() {
+  return (
+    <div className="flex flex-col gap-2">
+      <H1>Textarea</H1>
+      <Textarea placeholder="Enter text..." />
+    </div>
   );
 }
 

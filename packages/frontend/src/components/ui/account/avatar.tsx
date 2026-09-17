@@ -1,4 +1,4 @@
-import { cn } from "@dock-cloud/ui/lib/utils";
+import { cn } from "@lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import { Button } from "../button";
 
