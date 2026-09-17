@@ -95,7 +95,6 @@ const binary = await Bun.build({
   entrypoints: ["index.ts"],
   compile: {
     outfile: path.join(outdir, "frontend"),
-    assets: ["dist"],
   },
   plugins: [tailwind],
   minify: true,
@@ -111,3 +110,5 @@ if (!binary.success) {
   console.error(binary.logs);
   throw new Error("Failed to compile the frontend server binary");
 }
+
+console.log("Built binary executable at:", path.join(outdir, "frontend"));
