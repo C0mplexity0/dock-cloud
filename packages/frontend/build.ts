@@ -90,3 +90,24 @@ for (const output of result.outputs) {
     ` ${path.relative(process.cwd(), output.path)}  ${(output.size / 1024).toFixed(1)} KB`,
   );
 }
+
+const binary = await Bun.build({
+  entrypoints: ["index.ts"],
+  compile: {
+    outfile: path.join(outdir, "frontend"),
+    assets: ["dist"],
+  },
+  plugins: [tailwind],
+  minify: true,
+  sourcemap: "none",
+  target: "bun",
+  define: {
+    "process.env.NODE_ENV": JSON.stringify("production"),
+  },
+  bytecode: true,
+});
+
+if (!binary.success) {
+  console.error(binary.logs);
+  throw new Error("Failed to compile the frontend server binary");
+}

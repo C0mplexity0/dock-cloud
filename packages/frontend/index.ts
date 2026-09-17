@@ -1,9 +1,10 @@
 import { Glob } from "bun";
 import { serve } from "bun-serve-compress";
 import path, { basename } from "node:path";
-import { render } from "./index-server";
+import { render } from "./src/index-server";
 
 const htmlCache = new Map<string, string>();
+const distDirectory = path.join(import.meta.dir, "dist");
 
 async function processRequest(request: Request) {
   const pathname = new URL(request.url).pathname;
@@ -16,7 +17,7 @@ async function processRequest(request: Request) {
     });
   }
 
-  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const staticDirectory = path.join(distDirectory, "static");
   const filePath = path.resolve(staticDirectory, pathname.slice(1));
 
   if (filePath.startsWith(`${staticDirectory}${path.sep}`)) {
@@ -30,9 +31,7 @@ async function processRequest(request: Request) {
     }
   }
 
-  const htmlFile = Bun.file(
-    path.join(import.meta.dir, "../dist/static/index.html"),
-  );
+  const htmlFile = Bun.file(path.join(distDirectory, "static/index.html"));
   let html = await htmlFile.text();
   html = await injectModulePreloadLinks(html, request);
   html = await renderSSR(html, request);
@@ -74,7 +73,7 @@ async function findRequiredModulesFromFile(
   jsFiles: string[],
   routes: Record<string, string>,
 ): Promise<string[]> {
-  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const staticDirectory = path.join(distDirectory, "static");
   const file = Bun.file(path.join(staticDirectory, filePath));
   const text = await file.text();
   const requiredModules = findRequiredModules(text, jsFiles, routes);
@@ -85,7 +84,7 @@ async function injectModulePreloadLinks(
   htmlText: string,
   request: Request,
 ): Promise<string> {
-  const staticDirectory = path.resolve(import.meta.dir, "../dist/static");
+  const staticDirectory = path.join(distDirectory, "static");
   const pathname = new URL(request.url).pathname;
 
   const manifest = Bun.file(
@@ -154,6 +153,8 @@ async function renderSSR(htmlText: string, request: Request): Promise<string> {
   return newHtml;
 }
 
+const startTime = performance.now();
+
 const server = serve({
   async fetch(request) {
     const initialTime = performance.now();
@@ -167,3 +168,4 @@ const server = serve({
 });
 
 console.log(`Server running at ${server.url}`);
+console.log(`Startup time: ${(performance.now() - startTime).toFixed(2)}ms`);
